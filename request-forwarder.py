@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, url_for, jsonify
-import requests, time
-import json
+import requests
 app = Flask(__name__)
 
 NOT_ALLOWED_HEADERS = ['Host']
