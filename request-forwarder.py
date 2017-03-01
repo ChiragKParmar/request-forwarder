@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 NOT_ALLOWED_HEADERS = ['Host']
 @app.route('/forward', methods=['POST'])
-def my_test_endpoint():
+def request_forwarder():
     headers= {}
     MAX_RETRIES = 10
 
