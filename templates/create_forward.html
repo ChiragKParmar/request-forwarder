@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Request Forwarder{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h2>Request forwarder </h2>
+    </div>
+    <h3>Input url: {{ host }}/create-forward/{{ proxy_uuid }} </h3>
+</div>
+
+{% endblock %}
