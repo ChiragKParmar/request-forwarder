@@ -20,7 +20,7 @@ def page_not_found(e):
 @app.errorhandler(500)
 def internal_server_error(e):
     return render_template('500.html'), 500
-    
+
 #@app.route('/forward/<int:uuid>', methods=['POST'])
 @app.route('/forward', methods=['POST'])
 def request_forwarder():
@@ -42,7 +42,7 @@ def request_forwarder():
     			attempt += 1
     		else:
     			print res.status_code
-    			break	
+    			break
 
 
     return jsonify(' ', 200)
@@ -58,4 +58,4 @@ def create_forward_endpoint():
     return render_template('create_forward.html', proxy_uuid=proxy_uuid, host=request.headers['host'])
 
 if __name__ == '__main__':
-    app.run(debug=True)	
+    app.run(debug=True)
