@@ -49,7 +49,6 @@ def request_forwarder():
 
 @app.route('/create-forward', methods=['GET','POST'])
 def create_forward_endpoint():
-    form = CreateProxy()
     proxy_uuid = uuid.uuid4()
     #insert uuid in the db
     #send uuid to ui
