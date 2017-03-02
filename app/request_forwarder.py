@@ -26,7 +26,7 @@ class RegistrationForm(FlaskForm):
     outgoing_url = StringField('Outgoing URL', validators=[InputRequired(), Length(1, 64)])
     submit = SubmitField('submit')
 
-    class ProxyUrl(db.Model):
+class ProxyUrl(db.Model):
     __tablename__ = 'proxy'
     id = db.Column(db.Integer, primary_key=True)
     incoming_url = db.Column(db.String(64), unique=True)
@@ -41,12 +41,12 @@ def index():
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('404.html'), 404
+    return render_template('errors/404.html'), 404
 
 
 @app.errorhandler(500)
 def internal_server_error(e):
-    return render_template('500.html'), 500
+    return render_template('errors/500.html'), 500
 
 #@app.route('/forward/<int:uuid>', methods=['POST'])
 @app.route('/forward', methods=['POST'])
