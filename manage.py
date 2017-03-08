@@ -116,12 +116,3 @@ def format():
 
 if __name__ == '__main__':
     manager.run()
-#
-# setup(
-#     name='request_forwarder',
-#     packages=['request_forwarder'],
-#     include_package_data=True,
-#     install_requires=[
-#         'flask',
-#     ],
-# )
