@@ -51,4 +51,4 @@ def create_forward_endpoint():
 @main.route('/send-request', methods=['GET','POST'])
 def send_request():
     #Retrieve records from db
-    return redirect(url_for('index'))
+    return redirect(url_for('.index'))
