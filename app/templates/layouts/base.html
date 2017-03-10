@@ -1,9 +1,17 @@
 {% extends "bootstrap/base.html" %}
 
 {% block title %}Request Forwarder{% endblock %}
+<!-- FONT
+–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<link href='http://fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
 
 {% block head %}
 {{ super() }}
+<!-- CSS
+–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<link rel="stylesheet" type='text/css' href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.2/normalize.min.css">
+<link rel="stylesheet" type='text/css' href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
 <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 {% endblock %}
@@ -18,9 +26,25 @@
             <ul class="nav navbar-nav">
                 <li><a href="/create-forward">Create forwarder</a></li>
             </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="{{ url_for('auth.login') }}">Log In</a></li>
-            </ul>
+            {% if not current_user.is_authenticated %}
+                       <li class="navbar-item">
+                         <a class="navbar-link" href="{{ url_for('auth.login') }}">Login</a>
+                       </li>
+                     {% else %}
+                       <li class="navbar-item">
+                         <a class="navbar-link" href="#" data-popover="#moreNavPopover">{{ current_user.username }}</a>
+                         <div id="moreNavPopover" class="popover">
+                           <ul class="popover-list">
+                             <li class="popover-item">
+                               <a class="popover-link" href="{{ url_for('main.index') }}">Your Todolists</a>
+                             </li>
+                             <li class="popover-item">
+                               <a class="popover-link" href="{{ url_for('auth.logout') }}">logout</a>
+                             </li>
+                           </ul>
+                         </div>
+                       </li>
+                       {% endif %}
         </div>
 
     </div>
