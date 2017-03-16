@@ -1,5 +1,4 @@
 {% extends "layouts/base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
 {% import 'macros/form_macro.html' as f %}
 
 {% block title %}Request Forwarder{% endblock %}
@@ -9,9 +8,9 @@
     <div class="page-header">
         <h2 class="title">Request forwarder </h2>
     </div>
-    <h3>Input url: {{ host }}/create-forward/{{ proxy_uuid }} </h3>
-    <div class="ui grid container">
-        <div class="eight wide computer sixteen wide mobile centered column">
+    <h5>Input url: {{ host }}/create-forward/{{ proxy_uuid }} </h5>
+    <div class="header">
+        <div class="header">
             <h3>Add an outgoing url: </h3>
           {% set flashes = {
               'error':   get_flashed_messages(category_filter=['form-error']),

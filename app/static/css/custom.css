@@ -26,8 +26,8 @@ tr td.todolist-title {
 }
 
 .header {
-  margin-top: 6rem;
-  text-align: center;
+  margin-top: 0.1rem;
+  text-align: left;
 }
 
 .value-prop {
