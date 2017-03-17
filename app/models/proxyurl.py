@@ -56,8 +56,7 @@ class User(UserMixin, db.Model, BaseModel):
     member_since = db.Column(db.DateTime, default=datetime.utcnow)
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
     is_admin = db.Column(db.Boolean, default=False)
-
-    # todolists = db.relationship('TodoList', backref='user', lazy='dynamic')
+    bucket_id = db.relationship('Bucket', backref='user', lazy='dynamic')
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
@@ -121,12 +120,6 @@ class User(UserMixin, db.Model, BaseModel):
             ),
             'member_since': self.member_since,
             'last_seen': self.last_seen
-            # ,
-            # 'todolists': url_for(
-            #     'api.get_user_todolists',
-            #     username=self.username, _external=True
-            # ),
-            # 'todolist_count': self.todolists.count()
         }
 
     def promote_to_admin(self):
@@ -137,11 +130,48 @@ class User(UserMixin, db.Model, BaseModel):
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-class ProxyUrl(db.Model):
-    __tablename__ = 'proxy'
+class Bucket(db.Model, BaseModel):
+    __tablename__ = 'bucket'
     id = db.Column(db.Integer, primary_key=True)
-    incoming_url = db.Column(db.String(64), unique=True)
-    outgoing_url = db.Column(db.String(64))
+    bucket_description = db.Column(db.String(256))
+    created_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, index=True, default=None)
+    created_by = db.Column(db.String(64), db.ForeignKey('user.username'))
+    bucket_endpoint = db.Column(db.String(64))
+    destination_endpoint = db.relationship('Destination', backref='bucket', lazy='dynamic')
+
+    def __init__(self, bucket_description, creator=None,
+                 created_at=None):
+        self.bucket_description = bucket_description
+        self.creator = creator
+        self.created_at = created_at or datetime.utcnow()
 
     def __repr__(self):
-        return '<ProxyUrl %r>' % self.incoming_url
+        return '<{0} bucket created by {1}>'.format(
+            self.bucket_description, self.created_by or 'None')
+
+    def to_dict(self):
+        return {
+            'bucket_description': self.bucket_description,
+            'created_by': self.created_by,
+            'created_at': self.created_at,
+        }
+
+class Destination(db.Model, BaseModel):
+    __tablename__ = 'destination'
+    id = db.Column(db.Integer, primary_key=True)
+    destination_endpoint = db.Column(db.String(64))
+    created_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, index=True, default=None)
+    created_by = db.Column(db.String(64), db.ForeignKey('user.username'))
+    bucket_id = db.Column(db.Integer, db.ForeignKey('bucket.id'))
+
+    def __repr__(self):
+        return '<Destination %r>' % self.destination_endpoint
+
+        def to_dict(self):
+        return {
+            'destination_endpoint': self.destination_endpoint,
+            'created_by': self.created_by,
+            'created_at': self.created_at,
+        }
