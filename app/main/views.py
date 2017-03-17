@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, url_for, jsonify, redirect, url_for
 from .. import db
-from ..models import ProxyUrl
-from .forms import RegistrationForm
+from ..models import Bucket, Destination
+from .forms import RegistrationForm, BucketForm, DestinationForm
 from . import main
 import requests, uuid
 
@@ -35,18 +35,31 @@ def request_forwarder():
 
     return jsonify(' ', 200)
 
-@main.route('/create-forward', methods=['GET','POST'])
-def create_forward_endpoint():
+def _get_user():
+    return current_user.username if current_user.is_authenticated else None
+
+@main.rout('/create-bucket', methods=['GET', 'POST'])
+def create_bucket():
     proxy_uuid = str(uuid.uuid4())
-    form = RegistrationForm()
+    form = BucketForm()
     if form.validate_on_submit():
+        # TODO update following logic to save bucket data with
+        # end point
         proxy_url = ProxyUrl(
             incoming_url=proxy_uuid,
             outgoing_url=form.outgoing_url.data)
         db.session.add(proxy_url)
         db.session.commit()
-        return redirect(url_for('.index'))
+        return redirect(url_for('main.bucket')) #TODO create bucket.html page (overview page)
     return render_template('create_forward.html', proxy_uuid=proxy_uuid, host=request.headers['host'], form=form)
+
+@main.route('/add-destination', methods=['GET','POST'])
+def add_destination_endpoint():
+    form = DestinationForm(destination_endpoint=request.form.get.('destination_endpoint'))
+    if form.validate_on_submit():
+        bucket = Bucket(created_by=_get_user()).save()
+        return redirect(url_for('.index'))
+    return render_template('create_forward.html', , form=form)
 
 @main.route('/send-request', methods=['GET','POST'])
 def send_request():
