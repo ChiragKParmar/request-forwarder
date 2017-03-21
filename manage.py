@@ -6,7 +6,7 @@ from flask_script import Manager, Shell
 from config import Config
 from setuptools import setup
 from app import create_app, db
-from app.models import ProxyUrl, User
+from app.models import Bucket, User, Destination
 
 if os.path.exists('config.env'):
     print('Importing environment from .env file')

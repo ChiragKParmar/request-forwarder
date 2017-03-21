@@ -169,7 +169,7 @@ class Destination(db.Model, BaseModel):
     def __repr__(self):
         return '<Destination %r>' % self.destination_endpoint
 
-        def to_dict(self):
+    def to_dict(self):
         return {
             'destination_endpoint': self.destination_endpoint,
             'created_by': self.created_by,

@@ -7,7 +7,9 @@ from ..models import Bucket, Destination
 from . import main
 
 class BucketForm(FlaskForm):
-    #TODO update this class
+    bucket_name = StringField('Enter bucket name', validators=[Required(), Length(1,128)])
+    submit = SubmitField('Submit')
 
 class DestinationForm(FlaskForm):
-    #TODO update this class
+    destination_endpoint = StringField('Enter desination end point', validators=[Required(), Length(1, 128)])
+    submit = SubmitField('Submit')
